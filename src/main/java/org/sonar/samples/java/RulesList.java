@@ -35,6 +35,7 @@ public final class RulesList {
       AvoidSuperClassRule.class,
       AvoidTreeListRule.class,
       MyCustomSubscriptionRule.class,
+      BlankLineBeforeReturnRule.class,
       SecurityAnnotationMandatoryRule.class));
   }
 

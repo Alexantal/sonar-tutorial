@@ -4,11 +4,10 @@
   "status": "ready",
   "remediation": {
     "func": "Constant/Issue",
-    "constantCost": "1min"
+    "constantCost": "10min"
   },
   "tags": [
-    "convention",
-    "readability"
+    "pitfall"
   ],
-  "defaultSeverity": "Minor"
+  "defaultSeverity": "Major"
 }

@@ -19,7 +19,7 @@ class MyJavaFileCheckRegistrarTest {
     MyJavaFileCheckRegistrar registrar = new MyJavaFileCheckRegistrar();
     registrar.register(context);
 
-    assertThat(context.mainRuleKeys).extracting(RuleKey::toString).containsExactly(
+    assertThat(context.mainRuleKeys).extracting(RuleKey::toString).containsExactlyInAnyOrder(
       "omni-sonar:SpringControllerRequestMappingEntity",
       "omni-sonar:AvoidAnnotation",
       "omni-sonar:AvoidBrandInMethodNames",
@@ -27,9 +27,10 @@ class MyJavaFileCheckRegistrarTest {
       "omni-sonar:AvoidSuperClass",
       "omni-sonar:AvoidTreeList",
       "omni-sonar:AvoidMethodWithSameTypeInArgument",
+      "omni-sonar:BlankLineBeforeReturn",
       "omni-sonar:SecurityAnnotationMandatory");
 
-    assertThat(context.mainCheckClasses).extracting(Class::getSimpleName).containsExactly(
+    assertThat(context.mainCheckClasses).extracting(Class::getSimpleName).containsExactlyInAnyOrder(
       "SpringControllerRequestMappingEntityRule",
       "AvoidAnnotationRule",
       "AvoidBrandInMethodNamesRule",
@@ -37,6 +38,7 @@ class MyJavaFileCheckRegistrarTest {
       "AvoidSuperClassRule",
       "AvoidTreeListRule",
       "MyCustomSubscriptionRule",
+      "BlankLineBeforeReturnRule",
       "SecurityAnnotationMandatoryRule");
 
     assertThat(context.testRuleKeys).extracting(RuleKey::toString).containsExactly(

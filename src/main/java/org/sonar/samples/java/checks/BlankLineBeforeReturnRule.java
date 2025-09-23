@@ -9,7 +9,6 @@ import org.sonar.plugins.java.api.tree.SyntaxToken;
 
 /**
  * Custom rule to enforce blank line before return statements
- *
  * Rules:
  * 1. If method has more than one line, blank line before return is mandatory
  * 2. Lambda expressions should NOT have blank line before return

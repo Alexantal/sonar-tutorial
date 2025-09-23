@@ -20,26 +20,10 @@ class MyJavaFileCheckRegistrarTest {
     registrar.register(context);
 
     assertThat(context.mainRuleKeys).extracting(RuleKey::toString).containsExactlyInAnyOrder(
-      "omni-sonar:SpringControllerRequestMappingEntity",
-      "omni-sonar:AvoidAnnotation",
-      "omni-sonar:AvoidBrandInMethodNames",
-      "omni-sonar:AvoidMethodDeclaration",
-      "omni-sonar:AvoidSuperClass",
-      "omni-sonar:AvoidTreeList",
-      "omni-sonar:AvoidMethodWithSameTypeInArgument",
-      "omni-sonar:BlankLineBeforeReturn",
-      "omni-sonar:SecurityAnnotationMandatory");
+      "omni-sonar:BlankLineBeforeReturn");
 
     assertThat(context.mainCheckClasses).extracting(Class::getSimpleName).containsExactlyInAnyOrder(
-      "SpringControllerRequestMappingEntityRule",
-      "AvoidAnnotationRule",
-      "AvoidBrandInMethodNamesRule",
-      "AvoidMethodDeclarationRule",
-      "AvoidSuperClassRule",
-      "AvoidTreeListRule",
-      "MyCustomSubscriptionRule",
-      "BlankLineBeforeReturnRule",
-      "SecurityAnnotationMandatoryRule");
+      "BlankLineBeforeReturnRule");
 
     assertThat(context.testRuleKeys).extracting(RuleKey::toString).containsExactly(
       "omni-sonar:NoIfStatementInTests");
@@ -47,5 +31,4 @@ class MyJavaFileCheckRegistrarTest {
     assertThat(context.testCheckClasses).extracting(Class::getSimpleName).containsExactly(
       "NoIfStatementInTestsRule");
   }
-
 }

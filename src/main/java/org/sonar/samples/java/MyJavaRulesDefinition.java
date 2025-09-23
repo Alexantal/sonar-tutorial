@@ -22,7 +22,7 @@ public class MyJavaRulesDefinition implements RulesDefinition {
   private static final String RESOURCE_BASE_PATH = "org/sonar/l10n/java/rules/java";
 
   public static final String REPOSITORY_KEY = "rbc-sys-sonar-plugin";
-  public static final String REPOSITORY_NAME = "RBC SYS sonar plugin";
+  public static final String REPOSITORY_NAME = "RBC SYS plugin";
 
   // Add the rule keys of the rules which need to be considered as template-rules
   private static final Set<String> RULE_TEMPLATES_KEY = Collections.emptySet();

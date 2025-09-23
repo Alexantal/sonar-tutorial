@@ -1,0 +1,14 @@
+{
+  "title": "Blank line should precede return statement",
+  "type": "CODE_SMELL",
+  "status": "ready",
+  "remediation": {
+    "func": "Constant/Issue",
+    "constantCost": "1min"
+  },
+  "tags": [
+    "convention",
+    "readability"
+  ],
+  "defaultSeverity": "Minor"
+}

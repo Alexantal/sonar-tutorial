@@ -1,0 +1,52 @@
+<p>This rule enforces a blank line before return statements to improve code readability.</p>
+
+<h2>Why is this an issue?</h2>
+<p>Having a blank line before return statements helps visually separate the return logic from the preceding code, making the code flow clearer and easier to read.</p>
+
+<h2>Rules</h2>
+<ul>
+    <li>If a method has more than one line of code, a blank line before the return statement is mandatory</li>
+    <li>Lambda expressions should NOT have a blank line before the return statement</li>
+    <li>If a block (e.g., if-else) has more than one line and contains a return statement, a blank line before the return is mandatory</li>
+</ul>
+
+<h2>Noncompliant Code Example</h2>
+<pre>
+public String processData(String input) {
+    String processed = input.trim().toLowerCase();
+    validateInput(processed);
+    return processed; // Missing blank line before return
+}
+
+// Lambda with unnecessary blank line
+list.stream()
+    .filter(x -> {
+        doSomething(x);
+
+        return x.isValid(); // Unnecessary blank line in lambda
+    })
+</pre>
+
+<h2>Compliant Solution</h2>
+<pre>
+public String processData(String input) {
+    String processed = input.trim().toLowerCase();
+    validateInput(processed);
+
+    return processed; // Proper blank line before return
+}
+
+// Lambda without blank line
+list.stream()
+    .filter(x -> {
+        doSomething(x);
+        return x.isValid(); // No blank line in lambda
+    })
+</pre>
+
+<h2>Exceptions</h2>
+<ul>
+    <li>Single-line methods do not require blank lines before return</li>
+    <li>Lambda expressions should never have blank lines before return</li>
+    <li>Single-statement blocks do not require blank lines</li>
+</ul>

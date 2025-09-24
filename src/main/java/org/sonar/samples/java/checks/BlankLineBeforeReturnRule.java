@@ -5,7 +5,6 @@ import java.util.List;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
 import org.sonar.plugins.java.api.tree.*;
-import org.sonar.plugins.java.api.tree.SyntaxToken;
 
 /**
  * Custom rule to enforce blank line before return statements
@@ -54,16 +53,7 @@ public class BlankLineBeforeReturnRule extends IssuableSubscriptionVisitor {
      * Checks return statements in lambda expressions
      */
     private void checkLambdaReturn(ReturnStatementTree returnStatement) {
-        SyntaxToken firstToken = returnStatement.firstToken();
-        if (firstToken == null) {
-            return;
-        }
-
-        int returnLine = firstToken.range().start().line();
-        List<String> lines = context.getFileLines();
-
-        // Check if there's a blank line before return in lambda
-        if (returnLine > 1 && returnLine <= lines.size() && isBlankLine(lines.get(returnLine - 2))) {
+        if (hasBlankLineBeforeReturn(returnStatement)) {
             reportIssue(returnStatement.returnKeyword(), MESSAGE_LAMBDA);
         }
     }
@@ -74,32 +64,56 @@ public class BlankLineBeforeReturnRule extends IssuableSubscriptionVisitor {
     private void checkReturnInBlock(ReturnStatementTree returnStatement, BlockTree blockTree) {
         List<StatementTree> statements = blockTree.body();
 
-        if (statements.size() <= 1) {
-            // Single statement blocks don't need blank lines
-            return;
-        }
-
         // Find the position of return statement in the block
         int returnIndex = findReturnIndex(statements, returnStatement);
-        if (returnIndex == -1 || returnIndex == 0) {
+        if (returnIndex == -1) {
             return;
         }
 
-        // Check if there are multiple lines of code before return
-        if (hasMultipleLogicalLines(statements, returnIndex)) {
-            SyntaxToken firstToken = returnStatement.firstToken();
-            if (firstToken == null || firstToken.range() == null) {
+        if (statements.size() == 1) {
+            // Single statement block - should NOT have blank line before return
+            if (hasBlankLineBeforeReturn(returnStatement)) {
+                reportIssue(returnStatement.returnKeyword(), "Remove blank line before return in single statement block.");
                 return;
             }
-
-            int returnLine = firstToken.range().start().line();
-            List<String> lines = context.getFileLines();
-
-            // Check if there's a blank line before return
-            if (returnLine > 1 && returnLine <= lines.size() && !isBlankLine(lines.get(returnLine - 2))) {
-                reportIssue(returnStatement.returnKeyword(), MESSAGE);
+        } else {
+            // Multiple statements - if return is not the first, check for blank line
+            if (returnIndex > 0) {
+                // Check if there's NO blank line before return
+                if (!hasBlankLineBeforeReturn(returnStatement)) {
+                    reportIssue(returnStatement.returnKeyword(), MESSAGE);
+                }
             }
         }
+    }
+
+    /**
+     * Checks if there's a blank line before the return statement
+     */
+    private boolean hasBlankLineBeforeReturn(ReturnStatementTree returnStatement) {
+        SyntaxToken returnToken = returnStatement.returnKeyword();
+        if (returnToken == null) {
+            return false;
+        }
+
+        // Get the line number of the return statement
+        int returnLine = returnToken.range().start().line();
+
+        // Get file content
+        String fileContent = context.getFileContent();
+        if (fileContent == null) {
+            return false;
+        }
+
+        String[] lines = fileContent.split("\\r?\\n");
+
+        // Check if there's a blank line before return (line before return should be empty)
+        if (returnLine >= 2 && returnLine <= lines.length) {
+            String previousLine = lines[returnLine - 2]; // -2 because lines are 0-indexed but line numbers are 1-indexed
+            return previousLine.trim().isEmpty();
+        }
+
+        return false;
     }
 
     /**
@@ -144,32 +158,5 @@ public class BlankLineBeforeReturnRule extends IssuableSubscriptionVisitor {
             }
         }
         return -1;
-    }
-
-    /**
-     * Checks if there are multiple logical lines before the return statement
-     */
-    private boolean hasMultipleLogicalLines(List<StatementTree> statements, int returnIndex) {
-        if (returnIndex == 0) {
-            return false;
-        }
-
-        // Count statements before return (excluding empty statements and comments)
-        int logicalLines = 0;
-        for (int i = 0; i < returnIndex; i++) {
-            StatementTree stmt = statements.get(i);
-            if (!stmt.is(Tree.Kind.EMPTY_STATEMENT)) {
-                logicalLines++;
-            }
-        }
-
-        return logicalLines > 0;
-    }
-
-    /**
-     * Checks if a line is blank (contains only whitespace)
-     */
-    private boolean isBlankLine(String line) {
-        return line.trim().isEmpty();
     }
 }

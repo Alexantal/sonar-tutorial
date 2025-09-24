@@ -3,67 +3,67 @@ import java.util.stream.Stream;
 
 public class BlankLineBeforeReturnRuleTestCases {
 
-    public boolean singleLineMethodWithoutBlankLineReturn() { //Compliant
-        return true;
+    public boolean singleLineMethodWithoutBlankLineReturn() {
+        return true; // Compliant
     }
 
-    public boolean singleLineMethodWithBlankLineReturn() { //Non-Compliant
+    public boolean singleLineMethodWithBlankLineReturn() {
 
-        return true;
+        return true; // Noncompliant
     }
 
-    public int multiLineMethodWithBlankLineReturn() { //Compliant
+    public int multiLineMethodWithBlankLineReturn() {
         int a = 1;
         int b = 2;
 
-        return a + b;
+        return a + b; // Compliant
     }
 
-    public int multiLineMethodWithoutBlankLineReturn() { //Non-Compliant
+    public int multiLineMethodWithoutBlankLineReturn() {
         int a = 1;
         int b = 2;
-        return a + b;
+        return a + b; // Noncompliant
     }
 
-    public int lambdaMethodWithoutBlankLineReturn() { //Compliant
+    public int lambdaMethodWithoutBlankLineReturn() {
         return List.of(1, 2, 3, 4, 5).stream()
                 .map(item -> {
                     result = item * 2;
-                    return result;})
+                    return result;}) // Compliant
                 .count();
     }
 
-    public int lambdaMethodWithBlankLineReturn() { //Non-Compliant
+    public int lambdaMethodWithBlankLineReturn() {
         return List.of(1, 2, 3, 4, 5).stream()
                 .map(item -> {
                     result = item * 2;
 
-                    return result;})
+                    return result;}) // Noncompliant
                 .count();
     }
 
-    public int ifElseMethodWithBlankLineReturn() { //Compliant
+    public int ifElseMethodWithBlankLineReturn() {
         int a = 1;
         int b = 2;
 
-        if (a > b) {
+        if (b > a) {
             int c = a + b;
 
-            return c;
+            return c; // Compliant
         } else {
-            return b;
+            return b; // Compliant
         }
     }
 
-    public int ifElseMethodWithoutBlankLineReturn() { //Non-Compliant
+    public int ifElseMethodWithoutBlankLineReturn() {
         int a = 1;
         int b = 2;
 
-        if (a > b) {
+        if (b > a) {
             int c = a + b;
-            return c;
+            return c; // Noncompliant
         } else {
-            return b;
+            return b; // Compliant
         }
     }
 }

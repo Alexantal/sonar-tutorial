@@ -20,15 +20,15 @@ class MyJavaFileCheckRegistrarTest {
     registrar.register(context);
 
     assertThat(context.mainRuleKeys).extracting(RuleKey::toString).containsExactlyInAnyOrder(
-      "omni-sonar:BlankLineBeforeReturn");
+      "rbc-sys-sonar-plugin:BlankLineBeforeReturn");
 
     assertThat(context.mainCheckClasses).extracting(Class::getSimpleName).containsExactlyInAnyOrder(
       "BlankLineBeforeReturnRule");
 
-    assertThat(context.testRuleKeys).extracting(RuleKey::toString).containsExactly(
-      "omni-sonar:NoIfStatementInTests");
+    assertThat(context.testRuleKeys).extracting(RuleKey::toString).containsExactlyInAnyOrder(
+      "rbc-sys-sonar-plugin:NoIfStatementInTests");
 
-    assertThat(context.testCheckClasses).extracting(Class::getSimpleName).containsExactly(
+    assertThat(context.testCheckClasses).extracting(Class::getSimpleName).containsExactlyInAnyOrder(
       "NoIfStatementInTestsRule");
   }
 }

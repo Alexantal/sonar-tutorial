@@ -75,5 +75,4 @@ public class NoIfStatementInTestsRule extends IssuableSubscriptionVisitor {
       // skip inner or anonymous classes
     }
   }
-
 }
